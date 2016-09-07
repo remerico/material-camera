@@ -5,10 +5,12 @@
 
 		<activity
 		    android:name="com.afollestad.materialcamera.CaptureActivity"
-		    android:theme="@style/MaterialCamera.CaptureActivity" />
+		    android:theme="@style/MaterialCamera.CaptureActivity"
+			android:configChanges="orientation" />
 		<activity
 		    android:name="com.afollestad.materialcamera.CaptureActivity2"
-		    android:theme="@style/MaterialCamera.CaptureActivity" />
+		    android:theme="@style/MaterialCamera.CaptureActivity"
+			android:configChanges="orientation" />
 
     </application>
 

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.media.CamcorderProfile;
 import android.net.Uri;
@@ -40,6 +39,7 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
 
     private int mCameraPosition = CAMERA_POSITION_UNKNOWN;
     private int mFlashMode = FLASH_MODE_OFF;
+    private boolean mPickGallery;
     private boolean mRequestingPermission;
     private long mRecordingStart = -1;
     private long mRecordingEnd = -1;
@@ -92,7 +92,6 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
         if (!CameraUtil.hasCamera(this)) {
             new MaterialDialog.Builder(this)
                     .title(R.string.mcam_error)
@@ -171,8 +170,8 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     @Override
     protected final void onPause() {
         super.onPause();
-        if (!isFinishing() && !isChangingConfigurations() && !mRequestingPermission)
-            finish();
+        //if (!isFinishing() && !isChangingConfigurations() && !mRequestingPermission)
+        //    finish();
     }
 
     @Override
@@ -563,5 +562,9 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
         return !useStillshot() || mFlashModes == null;
     }
 
+    @Override
+    public boolean shouldShowPickGallery() {
+        return getIntent().getBooleanExtra(CameraIntentKey.PICK_GALLERY, false);
+    }
 
 }

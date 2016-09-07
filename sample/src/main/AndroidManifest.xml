@@ -27,12 +27,12 @@
         </activity>
 
         <!-- Register library Activities -->
-        <activity
-            android:name="com.afollestad.materialcamera.CaptureActivity"
-            android:theme="@style/MaterialCamera.CaptureActivity" />
-        <activity
-            android:name="com.afollestad.materialcamera.CaptureActivity2"
-            android:theme="@style/MaterialCamera.CaptureActivity" />
+        <!--<activity-->
+            <!--android:name="com.afollestad.materialcamera.CaptureActivity"-->
+            <!--android:theme="@style/MaterialCamera.CaptureActivity" />-->
+        <!--<activity-->
+            <!--android:name="com.afollestad.materialcamera.CaptureActivity2"-->
+            <!--android:theme="@style/MaterialCamera.CaptureActivity" />-->
 
     </application>
 

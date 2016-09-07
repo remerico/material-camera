@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:foreground="?selectableItemBackground"
-    tools:ignore="UnusedAttribute">
+    tools:ignore="UnusedAttribute" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -15,6 +14,7 @@
             android:id="@+id/stillshot_imageview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
     </RelativeLayout>
 
     <LinearLayout
@@ -22,12 +22,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="#80000000"
         android:orientation="vertical"
         android:paddingBottom="@dimen/mcam_content_inset_less"
         android:paddingLeft="@dimen/mcam_content_inset"
         android:paddingRight="@dimen/mcam_content_inset"
-        android:paddingTop="@dimen/mcam_content_inset_less">
+        android:paddingTop="@dimen/mcam_content_inset_less"
+        style="@style/MaterialCamera.ControlsFrame" >
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -36,7 +36,7 @@
 
             <Button
                 android:id="@+id/retry"
-                style="?borderlessButtonStyle"
+                style="@style/MaterialCamera.RetryButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|start"
@@ -51,11 +51,11 @@
 
             <Button
                 android:id="@+id/confirm"
-                style="?borderlessButtonStyle"
+                style="@style/MaterialCamera.ConfirmButton"
+                android:background="@drawable/mcam_square_selector_orange"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
-                android:background="@drawable/mcam_square_selector"
                 android:padding="@dimen/mcam_content_inset_less"
                 android:scaleType="fitXY"
                 android:text="@string/mcam_use_stillshot"

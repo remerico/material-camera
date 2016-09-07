@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -32,6 +33,9 @@ import static com.afollestad.materialcamera.internal.BaseCaptureActivity.*;
  * @author Aidan Follestad (afollestad)
  */
 abstract class BaseCameraFragment extends Fragment implements CameraUriInterface, View.OnClickListener {
+
+    final int REQUEST_CODE_GALLERY = 1002;
+
     /**
      * Handler to UI thread.
      */
@@ -41,6 +45,7 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
     protected ImageButton mButtonStillshot;
     protected ImageButton mButtonFacing;
     protected ImageButton mButtonFlash;
+    protected Button mButtonGallery;
     protected TextView mRecordDuration;
 
     private boolean mIsRecording;
@@ -104,12 +109,14 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
             mInterface.setDidRecord(false);
         }
         mButtonFlash = (ImageButton) view.findViewById(R.id.flash);
+        mButtonGallery = (Button) view.findViewById(R.id.gallery);
         setupFlashMode();
 
         mButtonVideo.setOnClickListener(this);
         mButtonStillshot.setOnClickListener(this);
         mButtonFacing.setOnClickListener(this);
         mButtonFlash.setOnClickListener(this);
+        mButtonGallery.setOnClickListener(this);
 
         final int primaryColor = getArguments().getInt(CameraIntentKey.PRIMARY_COLOR);
         view.findViewById(R.id.controlsFrame).setBackgroundColor(CameraUtil.darkenColor(primaryColor));
@@ -124,6 +131,13 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
             mButtonStillshot.setImageResource(mInterface.iconStillshot());
             mButtonFlash.setVisibility(View.VISIBLE);
         }
+
+        if (mInterface.shouldShowPickGallery()) {
+            mButtonGallery.setVisibility(View.VISIBLE);
+        }
+        else {
+            mButtonGallery.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -134,11 +148,17 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
         mButtonFacing = null;
         mButtonFlash = null;
         mRecordDuration = null;
+        mButtonGallery = null;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
+        if (getActivity() != null) {
+            getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
+        }
+
         if (mInterface != null && mInterface.hasLengthLimit()) {
             if (mInterface.countdownImmediately() || mInterface.getRecordingStart() > -1) {
                 if (mInterface.getRecordingStart() == -1)
@@ -314,6 +334,10 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
             mInterface.toggleFlashMode();
             setupFlashMode();
             onPreferencesUpdated();
+        } else if (id == R.id.gallery) {
+            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(pickPhoto , REQUEST_CODE_GALLERY);
         }
     }
 

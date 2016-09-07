@@ -61,7 +61,7 @@ public class MaterialCamera {
     private boolean mContinueTimerInPlayback = true;
     private boolean mForceCamera1 = false;
     private boolean mStillShot;
-
+    private boolean mShowPickGallery = false;
 
     private int mVideoEncodingBitRate = -1;
     private int mAudioEncodingBitRate = -1;
@@ -273,6 +273,11 @@ public class MaterialCamera {
         return this;
     }
 
+    public MaterialCamera showPickGallery(boolean value) {
+        mShowPickGallery = value;
+        return this;
+    }
+
     /**
      * Will take a still shot instead of recording
      * Note: Current implementation will default to using Camera1 API.
@@ -301,7 +306,8 @@ public class MaterialCamera {
                 .putExtra(CameraIntentKey.RETRY_EXITS, mRetryExists)
                 .putExtra(CameraIntentKey.RESTART_TIMER_ON_RETRY, mRestartTimerOnRetry)
                 .putExtra(CameraIntentKey.CONTINUE_TIMER_IN_PLAYBACK, mContinueTimerInPlayback)
-                .putExtra(CameraIntentKey.STILL_SHOT, mStillShot);
+                .putExtra(CameraIntentKey.STILL_SHOT, mStillShot)
+                .putExtra(CameraIntentKey.PICK_GALLERY, mShowPickGallery);
 
         if (mVideoEncodingBitRate > 0)
             intent.putExtra(CameraIntentKey.VIDEO_BIT_RATE, mVideoEncodingBitRate);

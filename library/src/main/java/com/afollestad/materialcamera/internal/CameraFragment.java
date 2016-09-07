@@ -3,6 +3,7 @@ package com.afollestad.materialcamera.internal;
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.hardware.Camera;
@@ -204,6 +205,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             if (videoSizes == null || videoSizes.size() == 0)
                 videoSizes = parameters.getSupportedPreviewSizes();
             mVideoSize = chooseVideoSize((BaseCaptureActivity) activity, videoSizes);
+
             Camera.Size previewSize = chooseOptimalSize(parameters.getSupportedPreviewSizes(),
                     mWindowSize.x, mWindowSize.y, mVideoSize);
 
@@ -211,7 +213,8 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
             if (ManufacturerUtil.isSamsungGalaxyS3()) {
                 parameters.setPreviewSize(ManufacturerUtil.SAMSUNG_S3_PREVIEW_WIDTH,
                                           ManufacturerUtil.SAMSUNG_S3_PREVIEW_HEIGHT);
-            } else {
+            }
+            else {
                 parameters.setPreviewSize(previewSize.width, previewSize.height);
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT)
                     parameters.setRecordingHint(true);
@@ -226,7 +229,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
 
             setCameraDisplayOrientation(parameters);
             mCamera.setParameters(parameters);
-            createPreview();
+            createPreview(previewSize);
             mMediaRecorder = new MediaRecorder();
         } catch (IllegalStateException e) {
             throwError(new Exception("Cannot access the camera.", e));
@@ -278,7 +281,7 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         mCamera.setDisplayOrientation(previewOrientation);
     }
 
-    private void createPreview() {
+    private void createPreview(Camera.Size size) {
         Activity activity = getActivity();
         if (activity == null) return;
         if (mWindowSize == null)
@@ -288,7 +291,17 @@ public class CameraFragment extends BaseCameraFragment implements View.OnClickLi
         if (mPreviewFrame.getChildCount() > 0 && mPreviewFrame.getChildAt(0) instanceof CameraPreview)
             mPreviewFrame.removeViewAt(0);
         mPreviewFrame.addView(mPreviewView, 0);
-        mPreviewView.setAspectRatio(mWindowSize.x, mWindowSize.y);
+
+
+        int orientation = VideoStreamView.getScreenOrientation(activity);
+        if (orientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE ||
+                orientation == ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+            mPreviewView.setAspectRatio(size.width, size.height);
+        } else {
+            mPreviewView.setAspectRatio(size.height, size.width);
+        }
+
+
     }
 
     @Override

@@ -37,6 +37,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             // Request permission to save videos in external storage
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSION_RQ);
         }
+
+
+        if (savedInstanceState == null) {
+            onClick(findViewById(R.id.launchCameraStillshot));
+        }
+
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -54,13 +60,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .saveDir(saveDir)
                 .showPortraitWarning(true)
                 .allowRetry(true)
-                .defaultToFrontFacing(true)
                 .labelConfirm(R.string.mcam_use_video);
 
-        if (view.getId() == R.id.launchCameraStillshot)
+        if (view.getId() == R.id.launchCameraStillshot) {
             materialCamera
                     .stillShot() // launches the Camera in stillshot mode
-                    .labelConfirm(R.string.mcam_use_stillshot);
+                    .labelConfirm(R.string.mcam_use_stillshot)
+                    .showPickGallery(true);
+        }
+
         materialCamera.start(CAMERA_RQ);
     }
 

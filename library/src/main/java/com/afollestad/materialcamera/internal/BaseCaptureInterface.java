@@ -134,4 +134,6 @@ public interface BaseCaptureInterface {
 
     boolean shouldHideFlash();
 
+    boolean shouldShowPickGallery();
+
 }
