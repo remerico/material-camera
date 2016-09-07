@@ -9,7 +9,7 @@
 
     <style name="MaterialCamera.RetryButton" parent="@style/Widget.AppCompat.Button.Borderless" />
 
-    <style name="MaterialCamera.ConfirmButton" parent="@style/Widget.AppCompat.Button.Borderless">
+    <style name="MaterialCamera.ConfirmButton" parent="Theme.AppCompat.NoActionBar" >
         <item name="android:background">@drawable/mcam_square_selector_orange</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>

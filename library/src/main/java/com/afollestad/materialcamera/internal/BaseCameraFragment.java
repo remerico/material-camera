@@ -5,6 +5,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.media.MediaRecorder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -21,13 +22,18 @@ import com.afollestad.materialcamera.MaterialCamera;
 import com.afollestad.materialcamera.R;
 import com.afollestad.materialcamera.util.CameraUtil;
 import com.afollestad.materialcamera.util.Degrees;
+import com.afollestad.materialcamera.util.FileUtils;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.io.File;
 
 import static android.app.Activity.RESULT_CANCELED;
-import static com.afollestad.materialcamera.internal.BaseCaptureActivity.*;
+import static com.afollestad.materialcamera.internal.BaseCaptureActivity.CAMERA_POSITION_BACK;
+import static com.afollestad.materialcamera.internal.BaseCaptureActivity.FLASH_MODE_ALWAYS_ON;
+import static com.afollestad.materialcamera.internal.BaseCaptureActivity.FLASH_MODE_AUTO;
+import static com.afollestad.materialcamera.internal.BaseCaptureActivity.FLASH_MODE_OFF;
+import static com.afollestad.materialcamera.internal.BaseCaptureActivity.RESULT_OK;
 
 /**
  * @author Aidan Follestad (afollestad)
@@ -213,6 +219,35 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
         mInterface = null;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_GALLERY && resultCode == RESULT_OK) {
+
+            if (data != null) {
+
+                String path = FileUtils.getPath(getActivity(), data.getData());
+                Uri fileUri = Uri.fromFile(new File(path));
+                String type = getActivity().getContentResolver().getType(data.getData());
+
+                //Toast.makeText(getActivity(), fileUri.toString(), Toast.LENGTH_LONG).show();
+
+                getActivity().setResult(Activity.RESULT_OK, getActivity().getIntent()
+                        .putExtra(MaterialCamera.STATUS_EXTRA, MaterialCamera.STATUS_RECORDED)
+                        .setDataAndType(fileUri, type));
+
+                getActivity().finish();
+
+            }
+            else {
+                // Error something here
+            }
+
+        }
+
+    }
+
     public final void startCounter() {
         if (mPositionHandler == null)
             mPositionHandler = new Handler();
@@ -335,9 +370,14 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
             setupFlashMode();
             onPreferencesUpdated();
         } else if (id == R.id.gallery) {
-            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
-                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            startActivityForResult(pickPhoto , REQUEST_CODE_GALLERY);
+//            Intent pickPhoto = new Intent(Intent.ACTION_PICK,
+//                    android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+            Intent intent = new Intent();
+            intent.setType("image/*");
+            intent.setAction(Intent.ACTION_GET_CONTENT);
+
+            startActivityForResult(intent, REQUEST_CODE_GALLERY);
         }
     }
 
