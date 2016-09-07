@@ -13,6 +13,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 
 import com.afollestad.materialcamera.internal.CameraIntentKey;
@@ -46,6 +47,7 @@ public class MaterialCamera {
     public static final int STATUS_RETRY = 2;
 
     private Activity mContext;
+    private Fragment mFragment;
     private long mLengthLimit = -1;
     private boolean mAllowRetry = true;
     private boolean mAutoSubmit = false;
@@ -79,6 +81,12 @@ public class MaterialCamera {
 
     private int mLabelRetry;
     private int mLabelConfirm;
+
+    public MaterialCamera(@NonNull Fragment fragment) {
+        mFragment = fragment;
+        mContext = fragment.getActivity();
+        mPrimaryColor = DialogUtils.resolveColor(mContext, R.attr.colorPrimary);
+    }
 
     public MaterialCamera(@NonNull Activity context) {
         mContext = context;
@@ -333,6 +341,11 @@ public class MaterialCamera {
     }
 
     public void start(int requestCode) {
-        mContext.startActivityForResult(getIntent(), requestCode);
+        if (mFragment != null) {
+            mFragment.startActivityForResult(getIntent(), requestCode);
+        }
+        else {
+            mContext.startActivityForResult(getIntent(), requestCode);
+        }
     }
 }

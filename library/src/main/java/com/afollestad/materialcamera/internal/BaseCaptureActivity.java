@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.media.CamcorderProfile;
 import android.net.Uri;
@@ -91,6 +92,7 @@ public abstract class BaseCaptureActivity extends AppCompatActivity implements B
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
         if (!CameraUtil.hasCamera(this)) {
             new MaterialDialog.Builder(this)
                     .title(R.string.mcam_error)
