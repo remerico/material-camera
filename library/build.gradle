@@ -10,7 +10,6 @@ android {
     defaultConfig {
         minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
         targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
-        multiDexEnabled true
     }
 
     lintOptions {
@@ -18,7 +17,6 @@ android {
     }
 
     dexOptions {
-        preDexLibraries = false
         incremental true
     }
 
