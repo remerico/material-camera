@@ -8,19 +8,24 @@ ext {
 }
 
 android {
-    compileSdkVersion TARGET_SDK
-    buildToolsVersion BUILD_TOOLS
+
+    def globalConfiguration = rootProject.extensions.getByName("ext")
+
+    compileSdkVersion globalConfiguration.getAt("androidCompileSdkVersion")
+    buildToolsVersion globalConfiguration.getAt("androidBuildToolsVersion")
+
+    defaultConfig {
+        applicationId "com.afollestad.materialcamerasample"
+        minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
+        targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
+        versionCode 21
+        versionName PUBLISH_VERSION
+    }
 
     lintOptions {
         abortOnError false
     }
-    defaultConfig {
-        applicationId "com.afollestad.materialcamerasample"
-        minSdkVersion 14
-        targetSdkVersion TARGET_SDK
-        versionCode 21
-        versionName PUBLISH_VERSION
-    }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -35,6 +40,6 @@ repositories {
 }
 
 dependencies {
-    compile project(':library')
-    compile "com.android.support:appcompat-v7:$GOOGLE_LIBS"
+    compile project(':material-camera')
+    compile presentationDependencies.appcompatv7
 }

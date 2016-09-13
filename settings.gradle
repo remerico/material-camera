@@ -1,1 +1,4 @@
-include ':sample', ':library'
+include ':sample'
+
+include ':material-camera'
+project(':material-camera').projectDir = new File(settingsDir, "library")
