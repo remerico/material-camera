@@ -23,6 +23,12 @@ public class ManufacturerUtil {
     public static final Integer SAMSUNG_S7_PREVIEW_WIDTH = 640;
     public static final Integer SAMSUNG_S7_PREVIEW_HEIGHT = 480;
 
+
+    // LG device info
+    private static final String LG_MANUFACTURER = "LGE";
+    private static final String LG_G33_DEVICE_COMMON_PREFIX = "g3";
+
+
     // Samsung Galaxy helper functions
     public static boolean isSamsungDevice() {
         return SAMSUNG_MANUFACTURER.equals(Build.MANUFACTURER.toLowerCase());
@@ -34,6 +40,20 @@ public class ManufacturerUtil {
 
     public static boolean isSamsungGalaxyS7() {
         return Build.DEVICE.startsWith(SAMSUNG_S7_DEVICE_COMMON_PREFIX);
+    }
+
+    public static boolean isLGG3Device() {
+        return LG_MANUFACTURER.equalsIgnoreCase(Build.MANUFACTURER) &&
+                Build.DEVICE.startsWith(LG_G33_DEVICE_COMMON_PREFIX);
+    }
+
+    public static boolean hasNoCamera2Support() {
+
+        // Disable Camera2 support for now.
+        return true;
+
+        //return isSamsungDevice() || isLGG3Device();
+
     }
 
 }
