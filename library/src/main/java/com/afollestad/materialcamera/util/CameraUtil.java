@@ -3,29 +3,18 @@ package com.afollestad.materialcamera.util;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.hardware.Camera;
 import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraManager;
-import android.media.ExifInterface;
-import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 
-import com.afollestad.materialcamera.ICallback;
 import com.afollestad.materialcamera.internal.BaseCaptureActivity;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -142,7 +131,7 @@ public class CameraUtil {
     public static boolean hasCamera2(Context context, boolean stillShot) {
         if (context == null) return false;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) return false;
-        if (stillShot && ManufacturerUtil.isSamsungDevice()) return false;
+        if (stillShot && ManufacturerUtil.hasNoCamera2Support()) return false;
         try {
             CameraManager manager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
             String[] idList = manager.getCameraIdList();
