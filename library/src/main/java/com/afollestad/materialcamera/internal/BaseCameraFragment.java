@@ -2,14 +2,18 @@ package com.afollestad.materialcamera.internal;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.drawable.Drawable;
 import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,6 +29,8 @@ import com.afollestad.materialcamera.util.Degrees;
 import com.afollestad.materialcamera.util.FileUtils;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.getkeepsafe.taptargetview.TapTarget;
+import com.getkeepsafe.taptargetview.TapTargetView;
 
 import java.io.File;
 
@@ -220,6 +226,12 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        showCoachmark();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -404,4 +416,54 @@ abstract class BaseCameraFragment extends Fragment implements CameraUriInterface
 
         mButtonFlash.setImageResource(res);
     }
+
+    private void showCoachmark() {
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("camera", Context.MODE_PRIVATE);
+
+        String key = "coachmark_shown";
+
+        if (!sharedPreferences.getBoolean(key, false)) {
+
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+
+                        Drawable icon = VectorDrawableCompat.create(getResources(), R.drawable.mcam_action_stillshot, null);
+
+                        TapTargetView.showFor(getActivity(),
+                                TapTarget.forView(
+                                        mButtonStillshot,
+                                        getString(R.string.mcam_coachmark_message))
+                                        .outerCircleColor(R.color.mcam_coachmark_outer_color)
+                                        .targetCircleColor(R.color.mcam_coachmark_inner_color)
+                                        .drawShadow(true)
+                                        .cancelable(false)
+                                        .icon(icon)
+                                , new TapTargetView.Listener() {
+                                    @Override
+                                    public void onTargetClick(TapTargetView view) {
+                                        super.onTargetClick(view);
+                                    }
+
+                                    @Override
+                                    public void onTargetLongClick(TapTargetView view) {
+                                        super.onTargetLongClick(view);
+                                    }
+                                });
+                    }
+                    catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, 500);
+
+            sharedPreferences.edit().putBoolean(key, true).apply();
+
+        }
+
+    }
+
 }

@@ -10,6 +10,7 @@ android {
     defaultConfig {
         minSdkVersion globalConfiguration.getAt("androidMinSdkVersion")
         targetSdkVersion globalConfiguration.getAt("androidTargetSdkVersion")
+        vectorDrawables.useSupportLibrary = true
     }
 
     lintOptions {
@@ -45,6 +46,8 @@ dependencies {
     compile(presentationDependencies.afollestadMaterialDialog) {
         exclude group: 'com.android.support'
     }
+
+    compile 'com.getkeepsafe.taptargetview:taptargetview:1.2.0'
 
 }
 

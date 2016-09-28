@@ -15,4 +15,6 @@
     <string name="mcam_file_size_limit_reached">You\'ve reached the maximum file size!</string>
     <string name="mcam_from_gallery">From Gallery</string>
 
+    <string name="mcam_coachmark_message">Take a photo of your item. This will be your main photo, so make sure it’s awesome!</string>
+
 </resources>
