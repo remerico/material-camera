@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="mcam_coachmark_inner_color">#85D0EF</color>
-    <color name="mcam_coachmark_outer_color">#168ECA</color>
+    <color name="mcam_coachmark_inner_color">#FABA20</color>
+    <color name="mcam_coachmark_outer_color">#FF7900</color>
 </resources>
